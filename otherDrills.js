@@ -56,8 +56,8 @@ class BinarySearchTree {
       else if(this.left) {
         this._replaceWith(this.left);
       }
-      else if(this.right) {
-        this._replaceWith(this.right);
+      else if(this.right) { // 7
+        this._replaceWith(this.right); //replace 6 with 7 
       }
       //if node has no children
       else {
@@ -74,7 +74,37 @@ class BinarySearchTree {
       throw new error('Key Error')
     }
   }
+
+  _replaceWith(node) { 
+    // replace the node's parent with the node 
+     if(this.parent) { // 5
+       if(this == this.parent.left) {// 6 === 5's left 
+          this.parent.left = node
+       }
+       if(this == this.parent.right) {
+         this.parent.right = node;
+       }
+       if (node) {
+        node.parent = this.parent;
+       }
+     }
+     //if we are removing the root node
+     else {
+      if (node) {
+        this.key = node.key;
+        this.left = node.left;
+        this.right = node.right;
+      }
+      else {
+        this.key = null;
+        this.left = null;
+        this.right = null;
+      }
+    }
+  }
 }
+
+
 
            5
           / \
