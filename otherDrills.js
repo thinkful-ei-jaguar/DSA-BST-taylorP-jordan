@@ -44,7 +44,43 @@ class BinarySearchTree {
       throw new Error('Cannot find the item')
     }
   }
+
+  remove(item) {
+    if(this.key === item) {
+      if(this.left && this.right){
+        const successor = this.left._findMax();
+        this.key = successor.key
+        successor.remove(successor.key)
+      }
+      //if node has only 1 left child
+      else if(this.left) {
+        this._replaceWith(this.left);
+      }
+      else if(this.right) {
+        this._replaceWith(this.right);
+      }
+      //if node has no children
+      else {
+        this._replaceWith(null);
+      }
+    } 
+    else if (item < this.key && this.left) {
+      this.left.remove(item)
+    }
+    else if ( item > this.key && this.right) {
+      this.right.remove(item)
+    }
+    else {
+      throw new error('Key Error')
+    }
+  }
 }
+
+           5
+          / \
+        2    6
+      /  \    \
+    1     4    7
 
 function main() {
   let  bst = new BinarySearchTree();
@@ -53,6 +89,7 @@ function main() {
   bst.insert(3);
   bst.insert(2);
   bst.insert(4);
+  bst.insert(6);
 
   bst.find(2);
 }
