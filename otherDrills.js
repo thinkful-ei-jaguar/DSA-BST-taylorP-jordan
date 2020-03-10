@@ -48,7 +48,7 @@ class BinarySearchTree {
   remove(item) {
     if(this.key === item) {
       if(this.left && this.right){
-        const successor = this.left._findMax();
+        const successor = this.left? this.left._findMax(): this.right._findMin();
         this.key = successor.key
         successor.remove(successor.key)
       }
@@ -102,24 +102,50 @@ class BinarySearchTree {
       }
     }
   }
+
+  _findMin(){
+    if(this.left !== null){
+      return this.left._findMin()
+    }
+    else {
+      return this;
+    }
+  }
+
+  _findMax(){
+    if(this.right !== null){
+      return this.right._findMax()
+    }
+    else {
+      return this;
+    }
+  }
 }
 
 
 
-           5
-          / \
-        2    6
-      /  \    \
-    1     4    7
-
-function main() {
+    //        5
+    //       / \
+    //     3    6
+    //   /  \    
+    // 2     4    
+const test1 = ['E','A','S','Y','Q','U','E','S','T','I','O','N']
+function main(arr) {
   let  bst = new BinarySearchTree();
+  for(let i=0; i<arr.length; i++){
+    bst.insert(arr[i])
+  }
 
-  bst.insert(5);
-  bst.insert(3);
-  bst.insert(2);
-  bst.insert(4);
-  bst.insert(6);
+  // bst.insert(3);
+  // bst.insert(1);
+  // bst.insert(4);
+  // bst.insert(6);
+  // bst.insert(9);
+  // bst.insert(2);
+  // bst.insert(5);
+  // bst.insert(7);
 
-  bst.find(2);
+  return bst;
 }
+
+console.log(main(test1));
