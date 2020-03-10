@@ -1,151 +1,75 @@
-class BinarySearchTree {
-  constructor(key=null, parent=null) {
-    this.key = key,
-    this.parent= parent,
-    this.right = null,
-    this.left= null;
-  }
+const BST = require('./BST_class');
+const bst = new BST();
 
-  insert(item){
-    //if tree is empty
-    if(this.key === null) {
-      this.key = item;
-    }
-    else if(item<this.key){
-      if(this.left === null){
-        this.left = new BinarySearchTree(item, this);
-      } else {
-        this.left.insert(item);
-      }
-    }
-    else if(item>this.key){
-      if(this.right === null){
-        this.right = new BinarySearchTree(item, this);
-      } else {
-        this.right.insert(item);
-      }
-    }
-  }
+//Drill #5 
+// function heightBST(tree){
+//   console.log('firing!');
+//   //if the tree is null, return 0 <- base case 
+//   let counterL = 0;
+//   let counterR = 0;
 
-  find(item) {
-    //if the item we are finding is the root node 
-    if (this.key == item) {
-      return this;
-    }
-    //if the item we are looking for is less than the root, the go to the left-hand branch
-    //if there is an exisiting left child, recursively search for the item 
-    else if (item < this.key && this.left) {
-      return this.left.find(item);
-    }
-    else if (item > this.key && this.right) {
-      return this.right.find(item);
-    }
-    else {
-      throw new Error('Cannot find the item')
-    }
-  }
+//   //left counter - derive from the root's left 
+//   //add to the counter if there is a child 
+//   //if there isnt a child 
+//   if(tree.left && tree.right) {
+//     counterL++;
+//     counterR++;
+//     return heightBST(tree.left) > heightBST(tree.right) ? heightBST(tree.left) : heightBST(tree.right);
+//   }
+//   else if (tree.left) {
+//     counterL++;
+//     console.log(counterL);
+//     return heightBST(tree.left);
+//   } else if (tree.right) {
+//     counterR++;
+//     return heightBST(tree.right);
+//   }
 
-  remove(item) {
-    if(this.key === item) {
-      if(this.left && this.right){
-        const successor = this.left? this.left._findMax(): this.right._findMin();
-        this.key = successor.key
-        successor.remove(successor.key)
-      }
-      //if node has only 1 left child
-      else if(this.left) {
-        this._replaceWith(this.left);
-      }
-      else if(this.right) { // 7
-        this._replaceWith(this.right); //replace 6 with 7 
-      }
-      //if node has no children
-      else {
-        this._replaceWith(null);
-      }
-    } 
-    else if (item < this.key && this.left) {
-      this.left.remove(item)
-    }
-    else if ( item > this.key && this.right) {
-      this.right.remove(item)
-    }
-    else {
-      throw new error('Key Error')
-    }
-  }
+//   if(!tree.left && !tree.right) {
+//     return 0;
+//   }
 
-  _replaceWith(node) { 
-    // replace the node's parent with the node 
-     if(this.parent) { // 5
-       if(this == this.parent.left) {// 6 === 5's left 
-          this.parent.left = node
-       }
-       if(this == this.parent.right) {
-         this.parent.right = node;
-       }
-       if (node) {
-        node.parent = this.parent;
-       }
-     }
-     //if we are removing the root node
-     else {
-      if (node) {
-        this.key = node.key;
-        this.left = node.left;
-        this.right = node.right;
-      }
-      else {
-        this.key = null;
-        this.left = null;
-        this.right = null;
-      }
-    }
-  }
+//   let result = counterL >= counterR ? counterL : counterR;
+//   console.log(result, 'result from height function');
+// }
 
-  _findMin(){
-    if(this.left !== null){
-      return this.left._findMin()
-    }
-    else {
-      return this;
-    }
-  }
+// heightBST(bst);
 
-  _findMax(){
-    if(this.right !== null){
-      return this.right._findMax()
-    }
-    else {
-      return this;
-    }
+function bstHeight(tree) {
+  // console.log(tree.key, 'tree.key');
+  // console.log(tree.parent, 'tree.parent');
+  // console.log(tree.left.key, 'tree left');
+  // console.log(tree.right.key, 'tree right');
+
+  let counter = 1;
+  // if(tree.left){
+  //   counter++;
+  //   bstHeight(tree.left);
+  // }
+  if(tree.left == null ) {
+    return 0;
   }
+  counter++;
+  return bstHeight(tree.left) + counter;
+
 }
 
+//input -> bst      output -> 3
+//        5
+//       / \
+//     3    6
+//   /  \    
+// 2     4 
 
+function main() {
+  bst.insert(5);
+  bst.insert(6);
+  bst.insert(3);
+  bst.insert(4);
+  bst.insert(2);
 
-    //        5
-    //       / \
-    //     3    6
-    //   /  \    
-    // 2     4    
-const test1 = ['E','A','S','Y','Q','U','E','S','T','I','O','N']
-function main(arr) {
-  let  bst = new BinarySearchTree();
-  for(let i=0; i<arr.length; i++){
-    bst.insert(arr[i])
-  }
-
-  // bst.insert(3);
-  // bst.insert(1);
-  // bst.insert(4);
-  // bst.insert(6);
-  // bst.insert(9);
-  // bst.insert(2);
-  // bst.insert(5);
-  // bst.insert(7);
-
-  return bst;
+  bstHeight(bst);
+  // return bst;
 }
 
-console.log(main(test1));
+console.log(main());
